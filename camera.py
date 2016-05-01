@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 TOP = 0; RIGHT = 1; BOTTOM = 2; LEFT = 3;
 def checkEdge(image, edge, rows, threshold=True):
@@ -68,8 +68,8 @@ def findPoint(image, brokenEdge):
     if ((pointEdge == 2) or (pointEdge == 3)):
         targetRow = np.shape(image)[0] - targetRow
 
-    print("SHAPE: {0}".format(np.shape(image)))
-    print("POINT EDGE: {0}".format(pointEdge))
+    #print("SHAPE: {0}".format(np.shape(image)))
+    #print("POINT EDGE: {0}".format(pointEdge))
 
     return [targetRow, targetColumn]
 
@@ -79,12 +79,14 @@ while(True):
 
     # transform the image read into a grayscale image
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    gray = cv2.blur(gray, (10,10))
 
     # do our edge detection here
     # we do canny in this example, but this SHOULD BE TWEAKED based on your
     # application and real-world settings.
     # http://docs.opencv.org/2.4/modules/imgproc/doc/feature_detection.html
     edges = cv2.Canny(gray, 50, 50)
+
 
     # determine what edge we are coming from
     coord = []
@@ -104,8 +106,10 @@ while(True):
 
     # Display the resulting frame
     if (len(coord) > 0):
+        gray[coord[0]-10:coord[0]+10, coord[1]-10:coord[1]+10] = 255
         edges[coord[0]-10:coord[0]+10, coord[1]-10:coord[1]+10] = 255
-    cv2.imshow('frame', edges)
+    cv2.imshow('gray', gray)
+    cv2.imshow('edges', edges)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
