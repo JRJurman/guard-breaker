@@ -11,5 +11,5 @@ A lame python script to do finger detection.
 * visit [this link](http://www.lfd.uci.edu/~gohlke/pythonlibs/#pywin32) and download the appropriate version of PyWin32 for your system
 * `pip install path/to/opencv.whl` and `pip install path/to/win32.whl`
 * edit `camera.py` to get video input from your camera (see inline comments)
-* adapt display resolutions in mouse.py
+* adapt display resolutions in `mouse.py`
 * `python camera.py | python mouse.py`
