@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import sys
 
 #Select video input; 0 for default video
 cap = cv2.VideoCapture(1)
@@ -104,6 +105,8 @@ while(True):
     # if any edge was broken with some confidence, find a coordinate
     if (targetEdge > -1):
         coord = findPoint( edges, targetEdge )
+        print(str(coord[0]) + ', ' + str(coord[1]))
+        sys.stdout.flush()
 
     # Display the resulting frame
     if (len(coord) > 0):
