@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 
+#Select video input; 0 for default video
 cap = cv2.VideoCapture(1)
 
 TOP = 0; RIGHT = 1; BOTTOM = 2; LEFT = 3;
