@@ -105,7 +105,7 @@ while(True):
     # if any edge was broken with some confidence, find a coordinate
     if (targetEdge > -1):
         coord = findPoint( edges, targetEdge )
-        print(str(coord[0]) + ', ' + str(coord[1]))
+        print(str(coord[0]) + ' ' + str(coord[1]))
         sys.stdout.flush()
 
     # Display the resulting frame
