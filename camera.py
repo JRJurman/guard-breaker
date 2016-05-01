@@ -1,3 +1,4 @@
+import four_point_transform as fpt
 import numpy as np
 import cv2
 import sys
@@ -79,16 +80,23 @@ while(True):
     # Capture frame-by-frame
     ret, frame = cap.read()
 
+    # Load in a test image
+    #frame = cv2.imread('./test/kinect.png')
+
     # transform the image read into a grayscale image
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     gray = cv2.blur(gray, (10,10))
+
+    # transform the image based on hardcoded numbers
+    # because kinect has a fisheye lens
+    # (tl, tr, br, bl) = rect
+    transImg = fpt.four_point_transform(gray, np.array([(77, 42), (471, 37), (471, 240), (59, 261)]))
 
     # do our edge detection here
     # we do canny in this example, but this SHOULD BE TWEAKED based on your
     # application and real-world settings.
     # http://docs.opencv.org/2.4/modules/imgproc/doc/feature_detection.html
-    edges = cv2.Canny(gray, 50, 50)
-
+    edges = cv2.Canny(transImg, 50, 50)
 
     # determine what edge we are coming from
     coord = []
@@ -105,7 +113,7 @@ while(True):
     # if any edge was broken with some confidence, find a coordinate
     if (targetEdge > -1):
         coord = findPoint( edges, targetEdge )
-        print(str(coord[0]) + ' ' + str(coord[1]))
+        print("{0} {1}".format(coord[0], coord[1]))
         sys.stdout.flush()
 
     # Display the resulting frame
@@ -114,6 +122,8 @@ while(True):
         edges[coord[0]-10:coord[0]+10, coord[1]-10:coord[1]+10] = 255
     cv2.imshow('gray', gray)
     cv2.imshow('edges', edges)
+    cv2.imshow('transform', transImg)
+
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
